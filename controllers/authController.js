@@ -36,7 +36,7 @@ const registration = async (req, res) => {
     });
     user.save();
 
-await mailsender({email, subject: "OTP verification mail", otp:OTP_Num})
+await mailsender({email, subject: "OTP verification mail", otp:OTP_Num, fullName})
 
     res
       .status(200)
