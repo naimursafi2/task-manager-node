@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require('bcrypt')
+const bcrypt = require("bcrypt");
 
 const authSchema = new mongoose.Schema({
   avatar: {
@@ -34,14 +34,13 @@ const authSchema = new mongoose.Schema({
 
 authSchema.pre("save", async function () {
   // যদি password change না হয় → skip
-  if (!this.isModified("password")) return ;
+  if (!this.isModified("password")) return;
 
   try {
     const salt = await bcrypt.genSalt(10); // 10 = salt rounds
     this.password = await bcrypt.hash(this.password, salt);
-   
   } catch (error) {
-  res.status(500).send({message:"server error"})
+    res.status(500).send({ message: "server error" });
   }
 });
 

@@ -11,3 +11,6 @@ router.get("/",(req,res)=>{
 router.use("/auth",authRoute)
 
 module.exports = router;
+
+
+//DB_URL = mongodb+srv://task-manager-node:8emKNBpeGp8tsUoT@cluster0.e3zsmrp.mongodb.net/taskManager?appName=Cluster0
