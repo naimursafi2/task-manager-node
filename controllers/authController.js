@@ -36,7 +36,12 @@ const registration = async (req, res) => {
     });
     user.save();
 
-await mailsender({email, subject: "OTP verification mail", otp:OTP_Num, fullName})
+    await mailsender({
+      email,
+      subject: "OTP verification mail",
+      otp: OTP_Num,
+      fullName,
+    });
 
     res
       .status(200)
@@ -46,4 +51,28 @@ await mailsender({email, subject: "OTP verification mail", otp:OTP_Num, fullName
   }
 };
 
-module.exports = { registration };
+const verifyOTP = async () => {
+  const { email, otp } = req.body;
+
+  try {
+    const user = await authSchema.findOneAndUpdate(
+      {
+        email,
+        otp,
+        otpExpiry: { $gt: Date.now() },
+      },
+      { isVerified: true, otp: null },
+      {
+        new: true,
+      },
+    );
+    if(!user) return res.status(400).send({message:"invalid request"})
+       res.status(200).send({message:"Email verified Successfully"})
+  } catch (error) {
+     res.status(500).send({message:"internal server error!"})
+  }
+};
+
+const login = async (req, res) => {};
+
+module.exports = { registration, verifyOTP, login };

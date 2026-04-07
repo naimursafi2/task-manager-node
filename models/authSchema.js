@@ -28,7 +28,7 @@ const authSchema = new mongoose.Schema({
     default: null,
   },
   otpExpiry: {
-    type: Date,
+    type: Date, 
   },
 });
 
