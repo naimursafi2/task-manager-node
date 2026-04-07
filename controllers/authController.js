@@ -51,7 +51,7 @@ const registration = async (req, res) => {
   }
 };
 
-const verifyOTP = async () => {
+const verifyOTP = async (req, res) => {
   const { email, otp } = req.body;
 
   try {
@@ -63,16 +63,32 @@ const verifyOTP = async () => {
       },
       { isVerified: true, otp: null },
       {
-        new: true,
+        returnDocument: "after",
       },
     );
-    if(!user) return res.status(400).send({message:"invalid request"})
-       res.status(200).send({message:"Email verified Successfully"})
+    if (!user) return res.status(400).send({ message: "invalid request" });
+    res.status(200).send({ message: "Email verified Successfully" });
   } catch (error) {
-     res.status(500).send({message:"internal server error!"})
+    res.status(500).send({ message: "internal server error!" });
   }
 };
 
-const login = async (req, res) => {};
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await authSchema.findOne({ email });
+    if (!user) return res.status(400).send({ message: "invalid credentials." });
+    if (!user.isVerified)
+      return res.status(400).send({ message: "Email is not verified" });
+    const matchpass = await user.comparePassword(password);
+    // console.log(matchpass);
+    if (!matchpass)
+      return res.status(400).send({ message: "invalid credentials." });
+
+    return res.status(200).send({ message: "Login Successful." });
+  } catch (error) {
+    return res.status(500).send({ message: "internal server error." });
+  }
+};
 
 module.exports = { registration, verifyOTP, login };
