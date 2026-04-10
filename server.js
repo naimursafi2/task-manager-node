@@ -3,9 +3,11 @@ const app = express();
 const router = require("./routes");
 const dbConfig = require("./configs/dbConfig");
 require("dotenv").config();
+const cookieParser = require('cookie-parser')
 const dns = require("dns");
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
+app.use(cookieParser())
 app.use(express.json());
 app.use(router);
 dbConfig();

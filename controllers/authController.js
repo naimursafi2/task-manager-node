@@ -86,9 +86,13 @@ const login = async (req, res) => {
     if (!matchpass)
       return res.status(400).send({ message: "invalid credentials." });
 
-const accessToken = generateAccessToken({_id:user._id, email: user.email})
-console.log(accessToken)
+    const accessToken = generateAccessToken({
+      _id: user._id,
+      email: user.email,
+    });
+    console.log(accessToken);
 
+    res.cookie("accessToken", accessToken);
 
     return res.status(200).send({ message: "Login Successful." });
   } catch (error) {
@@ -97,17 +101,18 @@ console.log(accessToken)
 };
 
 const userProfile = async (req, res) => {
-  try {
-    const userData = await authSchema.findOne({ _id: req.user._id }).select("avatar email fullName")
-    if (!userData) {
-      return res.status(404).send({ message: "User not found" })
-    }
-    res.status(200).send(userData)
 
-  } catch (error) {
-    res.status(500).send({ message: "Internal Server Error!" });
+//console.log(req.user);
+try {
+  const userData = await authSchema.findOne({_id: req.user._id}).select("avater email fullName")
+  if(!userData){
+    return res.status(404).send({message: "user not found"})
   }
-
+  res.status(200).send(userData)
+} catch (error) {
+    res.status(500).send({message: "Internal server Error!"})
 }
+
+};
 
 module.exports = { registration, verifyOTP, login, userProfile };
