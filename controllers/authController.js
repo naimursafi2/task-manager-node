@@ -1,4 +1,5 @@
 const { mailsender } = require("../helpers/mailService");
+const cloudinary = require("../configs/cloudinary");
 const {
   isvalidEmail,
   isValidPassword,
@@ -115,4 +116,24 @@ try {
 
 };
 
-module.exports = { registration, verifyOTP, login, userProfile };
+const updateProfile = async (req , res)=>{
+const {fullName} = req.body;
+const userId = req.user._id;
+try {
+
+  const dataUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+
+  cloudinary.uploader.upload(dataUrl, ( error, result )=>{
+    console.log(result, error);
+    res.send(result)
+
+    
+  })
+
+} catch (error) {
+  console.log(error);
+  
+}
+}
+
+module.exports = { registration, verifyOTP, login, userProfile, updateProfile };
