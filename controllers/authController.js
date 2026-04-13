@@ -7,6 +7,7 @@ const {
   generateAccessToken,
 } = require("../helpers/utils");
 const authSchema = require("../models/authSchema");
+const { uploadToCloudinary } = require("../helpers/CloudinaryService");
 
 const registration = async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -102,38 +103,32 @@ const login = async (req, res) => {
 };
 
 const userProfile = async (req, res) => {
-
-//console.log(req.user);
-try {
-  const userData = await authSchema.findOne({_id: req.user._id}).select("avater email fullName")
-  if(!userData){
-    return res.status(404).send({message: "user not found"})
+  //console.log(req.user);
+  try {
+    const userData = await authSchema
+      .findOne({ _id: req.user._id })
+      .select("avater email fullName");
+    if (!userData) {
+      return res.status(404).send({ message: "user not found" });
+    }
+    res.status(200).send(userData);
+  } catch (error) {
+    res.status(500).send({ message: "Internal server Error!" });
   }
-  res.status(200).send(userData)
-} catch (error) {
-    res.status(500).send({message: "Internal server Error!"})
-}
-
 };
 
-const updateProfile = async (req , res)=>{
-const {fullName} = req.body;
-const userId = req.user._id;
-try {
-
-  const dataUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
-
-  cloudinary.uploader.upload(dataUrl, ( error, result )=>{
-    console.log(result, error);
-    res.send(result)
-
-    
-  })
-
-} catch (error) {
-  console.log(error);
-  
-}
-}
+const updateProfile = async (req, res) => {
+  const { fullName } = req.body;
+  const userId = req.user._id;
+  try {
+    const avatarUrl = await uploadToCloudinary({
+      mimetype: req.file.mimetype,
+      imgBuffer: req.file.buffer,
+    });
+    res.send(avatarUrl.secure_url)
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = { registration, verifyOTP, login, userProfile, updateProfile };
