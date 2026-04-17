@@ -1,5 +1,4 @@
-const cloudinary = require('cloudinary').v2;;
-
+const cloudinary = require("cloudinary").v2;
 
 const uploadToCloudinary = async ({ mimetype, imgBuffer }) => {
   const dataUrl = `data:${mimetype};base64,${imgBuffer.toString("base64")}`;
@@ -7,6 +6,4 @@ const uploadToCloudinary = async ({ mimetype, imgBuffer }) => {
   return await cloudinary.uploader.upload(dataUrl);
 };
 
-module.exports = {uploadToCloudinary}
-
-
+module.exports = { uploadToCloudinary };
