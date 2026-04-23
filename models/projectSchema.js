@@ -3,12 +3,12 @@ const mongoose = require("mongoose");
 const taskSchema = new mongoose.Schema({
   title: {
     type: String,
-    require: true,
+    required: true,
     trim: true,
   },
   description: {
     type: String,
-    require: true,
+    required: true,
     trim: true,
   },
   priority: {
@@ -31,13 +31,18 @@ const taskSchema = new mongoose.Schema({
 const projectSchema = new mongoose.Schema({
   title: {
     type: String,
-    require: true,
+    required: true,
     trim: true,
   },
   description: {
     type: String,
-    require: true,
+    required: true,
     trim: true,
+  },
+  slug: {
+    type: String,
+    required: true,
+    unique: true,
   },
   author: {
     type: mongoose.Types.ObjectId,

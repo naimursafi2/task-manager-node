@@ -22,4 +22,12 @@ const generateAccessToken = (user)=>{
   return token;
 }
 
-module.exports = { isvalidEmail, isValidPassword, generateOTP ,generateAccessToken};
+function generateSlug(title) {
+  return title
+    .toLowerCase()               // 1. Convert to lowercase
+    .trim()                      // 2. Remove leading/trailing whitespace
+    .replace(/[^a-z0-9 -]/g, '') // 5. Remove non-alphanumeric characters (except spaces/dashes)
+    .replace(/\s+/g, '-')        // 6. Replace spaces with dashes
+    .replace(/-+/g, '-');        // 7. Prevent multiple consecutive dashes
+}
+module.exports = { isvalidEmail, isValidPassword, generateOTP ,generateAccessToken, generateSlug};
