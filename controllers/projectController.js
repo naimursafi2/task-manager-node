@@ -26,9 +26,12 @@ const projectList = async (req, res) => {
 
     const project = await projectSchema
       .find({
-        author: req.user._id,
+       $or:[
+         {author: req.user._id},
+         {members: req.user._id}
+        ],
         title: {
-          $regex: search,
+          $regex: search || "",
           $options: "i",
         },
       })
@@ -45,9 +48,15 @@ const addTeamMemberToProject = async (req, res) => {
   const { email, projectId } = req.body;
   try {
     const existEmail = await authSchema.findOne({ email });
-    if (!existEmail)
-      return res.status(400).send({ message: "Email is not exist" });
+    if (!existEmail) return res.status(400).send({ message: "Email is not exist" });
 
+    const existMember = await projectSchema.findOne({
+       $or:[
+         {author: existEmail._id},
+         {members: existEmail._id}
+        ]
+      });
+    if (existMember)return res.status(400).send({ message: "This member already exist" });
     const project = await projectSchema.findOneAndUpdate(
       { _id: projectId },
       { members: existEmail._id },
@@ -55,7 +64,7 @@ const addTeamMemberToProject = async (req, res) => {
     );
     if (!project) return res.status(400).send({ message: "Invalid Request" });
 
-    console.log(existEmail);
+    res.status(200).send({message: "tem member added successfully"})
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: "internal server Error" });
