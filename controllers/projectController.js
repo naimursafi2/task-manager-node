@@ -70,4 +70,27 @@ const addTeamMemberToProject = async (req, res) => {
     res.status(500).send({ message: "internal server Error" });
   }
 };
-module.exports = { createProject, projectList, addTeamMemberToProject };
+
+const addTaskToProject = async (req, res)=>{
+  const {title, description, priority, assignedTo, projectId } = req.body;
+  try {
+    if(!title) return res.status(400).send({message:"Task title is required"});
+    if(!description) return res.status(400).send({message:"Task description is required"});
+    if(!priority) return res.status(400).send({message:"Task priority is required"});
+    if(!["mid", "low", "high"].includes(priority)) 
+      return res.status(400).send({message:"Invalid priority value"})
+    if(!projectId) return res.status(400).send({message:"Project Id not found"});
+    
+    const projectData = await projectSchema.findOneAndUpdate(
+      {_id:projectId},
+      {title, description, priority, assignedTo, projectId},
+      {returnDocument: 'after'}
+    );
+    if(!projectData) return res.status(400).send({message:"Project Id not found"});
+    res.status(200).send({message:"project created successfully..",projectData})
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+module.exports = { createProject, projectList, addTeamMemberToProject, addTaskToProject };
