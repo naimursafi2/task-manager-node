@@ -51,6 +51,7 @@ const addTeamMemberToProject = async (req, res) => {
     if (!existEmail) return res.status(400).send({ message: "Email is not exist" });
 
     const existMember = await projectSchema.findOne({
+      _id:projectId,
        $or:[
          {author: existEmail._id},
          {members: existEmail._id}
@@ -81,9 +82,25 @@ const addTaskToProject = async (req, res)=>{
       return res.status(400).send({message:"Invalid priority value"})
     if(!projectId) return res.status(400).send({message:"Project Id not found"});
     
+    if(assignedTo && !Array.isArray(assignedTo))
+      return res.status(400).send({message:"Invalid assigned data"});
+
+    if(assignedTo){    
+      for (const userId of assignedTo) {       
+        const existMember = await projectSchema.findOne({
+          _id: projectId,
+          $or:[
+            {author: userId},
+            {members: userId}
+           ]
+         });
+         if(!existMember) return res.status(400).send({message: "Invalid User"})
+      }
+    }
+
     const projectData = await projectSchema.findOneAndUpdate(
       {_id:projectId},
-      {title, description, priority, assignedTo, projectId},
+      {tasks: {title, description, priority, assignedTo, projectId}},
       {returnDocument: 'after'}
     );
     if(!projectData) return res.status(400).send({message:"Project Id not found"});
