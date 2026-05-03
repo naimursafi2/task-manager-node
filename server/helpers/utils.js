@@ -7,9 +7,8 @@ function isvalidEmail(email) {
 }
 
 function isValidPassword(password) {
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  return passwordRegex.test(password);
+  const regex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$!%*?&]{6,}$/;
+  return regex.test(password);
 }
 
 const generateOTP = () => {

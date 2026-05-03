@@ -16,19 +16,19 @@ const registration = async (req, res) => {
   const { fullName, email, password } = req.body;
   try {
     if (!fullName.trim())
-      return res.status(404).send({ message: "FullName is required." });
-    if (!email) return res.status(404).send({ message: "email is required." });
+      return res.status(404).send({ message: "FullName is required.", field:"fullName"});
+    if (!email) return res.status(404).send({ message: "email is required.",field:"email" });
     if (!isvalidEmail(email))
-      return res.status(404).send({ message: "email is invalid." });
+      return res.status(404).send({ message: "email is invalid.",field:"email" });
     if (!password)
-      return res.status(404).send({ message: "password is required." });
+      return res.status(404).send({ message: "password is required.", field:"password" });
     if (!isValidPassword(password))
-      return res.status(404).send({ message: "password is invalid." });
+      return res.status(404).send({ message: "password is invalid.",field:"password" });
 
     //check if email already exist
     const existingEmail = await authSchema.findOne({ email });
     if (existingEmail)
-      return res.status(404).send({ message: "This email already registerd." });
+      return res.status(404).send({ message: "This email already registerd.", field:"email" });
 
     //Generate OTP
     const OTP_Num = generateOTP();
@@ -83,13 +83,13 @@ const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await authSchema.findOne({ email });
-    if (!user) return res.status(400).send({ message: "invalid credentials." });
+    if (!user) return res.status(400).send({ message: "Email is not register", field:"email" });
     if (!user.isVerified)
-      return res.status(400).send({ message: "Email is not verified" });
+      return res.status(400).send({ message: "Email is not verified", field:"email" });
     const matchpass = await user.comparePassword(password);
     // console.log(matchpass);
     if (!matchpass)
-      return res.status(400).send({ message: "invalid credentials." });
+      return res.status(400).send({ message: "invalid credentials.", field:"password" });
 
     const accessToken = generateAccessToken({
       _id: user._id,
