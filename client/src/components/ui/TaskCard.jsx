@@ -1,42 +1,36 @@
-import PriorityBadge from "./PriorityBadge";
+import React from "react";
+import { Link } from "react-router";
 import UserAvatarGroup from "./UserAvatarGroup";
 
-export default function TaskCard({ task }) {
+const TaskCard = ({ project }) => {
   return (
-    <div className="rounded-2xl bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-      <div className="mb-4 flex items-start justify-between gap-4">
-        <div>
-          <h3 className="text-lg font-bold text-gray-900">{task.title}</h3>
-          <p className="mt-2 text-sm leading-6 text-gray-500">
-            {task.description}
-          </p>
-        </div>
-
-        <PriorityBadge priority={task.priority} />
-      </div>
-
-      <div className="mb-5">
-        <p className="mb-2 text-xs font-semibold uppercase text-gray-400">
-          Assigned To
+    <Link
+      to="/id"
+      className="w-64 bg-white shadow-[0px_0px_15px_rgba(0,0,0,0.09)] p-9 space-y-3 relative overflow-hidden"
+    >
+      <div className="w-24 h-24 bg-violet-500 rounded-full absolute -right-5 -top-7">
+        <p className="absolute bottom-6 left-7 text-white text-xs flex flex-col mt-3 ">
+          <span className="text-lg">{project?.tasks.length}</span>
+          <span>-Tasks:</span>
         </p>
-        <UserAvatarGroup users={task.assignedTo} />
       </div>
-
-      <div className="flex items-center justify-between border-t pt-4">
-        <span
-          className={`rounded-full px-3 py-1 text-xs font-semibold ${
-            task.isComplete
-              ? "bg-green-100 text-green-700"
-              : "bg-orange-100 text-orange-700"
-          }`}
+      <div className="fill-violet-500 w-12">
+        <svg
+          viewBox="0 0 24 24"
+          data-name="Layer 1"
+          id="Layer_1"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          {task.isComplete ? "Completed" : "Pending"}
-        </span>
-
-        <button className="text-sm font-semibold text-blue-600 hover:text-blue-800">
-          Details
-        </button>
+          <path d="m24,6.928v13.072h-11.5v3h5v1H6.5v-1h5v-3H0V4.5c0-1.379,1.122-2.5,2.5-2.5h12.98c-.253.295-.54.631-.856,1H2.5c-.827,0-1.5.673-1.5,1.5v14.5h22v-10.993l1-1.079Zm-12.749,3.094C19.058.891,19.093.855,19.11.838c1.118-1.115,2.936-1.113,4.052.002,1.114,1.117,1.114,2.936,0,4.052l-8.185,8.828c-.116,1.826-1.623,3.281-3.478,3.281h-5.59l.097-.582c.043-.257,1.086-6.16,5.244-6.396Zm2.749,3.478c0-1.379-1.122-2.5-2.5-2.5-2.834,0-4.018,3.569-4.378,5h4.378c1.378,0,2.5-1.121,2.5-2.5Zm.814-1.073l2.066-2.229c-.332-1.186-1.371-2.057-2.606-2.172-.641.749-1.261,1.475-1.817,2.125,1.117.321,1.998,1.176,2.357,2.277Zm.208-5.276c1.162.313,2.125,1.134,2.617,2.229l4.803-5.18c.737-.741.737-1.925.012-2.653-.724-.725-1.908-.727-2.637,0-.069.08-2.435,2.846-4.795,5.606Z" />
+        </svg>
       </div>
-    </div>
+      <h1 className="font-bold text-xl">{project?.title}</h1>
+      <p className="text-sm text-zinc-500 leading-6">{project?.description}</p>
+      {project?.members && project?.members.length > 0 && (
+        <UserAvatarGroup members={project?.members} />
+      )}
+    </Link>
   );
-}
+};
+
+export default TaskCard;

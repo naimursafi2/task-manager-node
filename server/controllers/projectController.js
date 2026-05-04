@@ -35,7 +35,7 @@ const projectList = async (req, res) => {
           $options: "i",
         },
       })
-      .populate("author", "fullName avatar");
+      .populate("author members", "fullName avatar");
     if (!project) return res.status(400).send({ message: "Project not found" });
 
     res.status(200).send({ project });
