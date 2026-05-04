@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useLoginMutation } from "../services/api";
 import { toast, ToastContainer } from "react-toastify";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [loginUser] = useLoginMutation();
   const [form, setForm] = useState({
     email: "",
@@ -38,13 +39,13 @@ const Login = () => {
   };
 
   // Submit handler
-  const handleSubmit =async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
 
-      setErrors({});
-     const res =await loginUser(form)
- if (res.error) {
+    setErrors({});
+    const res = await loginUser(form);
+    if (res.error) {
       const field = res.error.data.field;
       if (field == "email") return setErrors({ email: res.error.data.message });
       if (field == "password")
@@ -54,14 +55,16 @@ const Login = () => {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
-    
       toast.success("Login Successful!");
+      setTimeout(() => {
+        navigate("/");
+      }, 500);
     }
   };
 
   return (
     <div className="flex h-screen items-center justify-center ">
-      <ToastContainer/>
+      <ToastContainer />
       <div className="flex flex-col max-w-md mx-auto  p-6 shadow-lg rounded-2xl bg-white w-full">
         <h2 className="text-2xl font-semibold mb-5 text-center">Login</h2>
 

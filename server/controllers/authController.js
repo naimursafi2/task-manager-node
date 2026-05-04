@@ -42,7 +42,7 @@ const registration = async (req, res) => {
     });
     user.save();
 
-    await mailsender({
+     mailsender({
       email,
       subject: "OTP verification mail",
       otp: OTP_Num,
@@ -110,7 +110,7 @@ const userProfile = async (req, res) => {
   try {
     const userData = await authSchema
       .findOne({ _id: req.user._id })
-      .select("avater email fullName");
+      .select("avatar email fullName");
     if (!userData) {
       return res.status(404).send({ message: "user not found" });
     }

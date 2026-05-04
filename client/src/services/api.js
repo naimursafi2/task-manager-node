@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const apiService = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8000",
-    credentials: "include"
+    credentials: "include",
   }),
   endpoints: (build) => ({
     registration: build.mutation({
@@ -20,7 +20,14 @@ export const apiService = createApi({
         body: loginData,
       }),
     }),
+    getProfile: build.query({
+      query: () => "/auth/profile",
+    }),
+    getProjectList: build.query({
+      query: () => "/project/list",
+    }),
   }),
 });
 
-export const { useRegistrationMutation, useLoginMutation} = apiService;
+export const { useRegistrationMutation, useLoginMutation, useGetProfileQuery, useGetProjectListQuery } =
+  apiService;

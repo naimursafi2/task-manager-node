@@ -6,8 +6,10 @@ import { useRegistrationMutation } from "../services/api";
 import { ToastContainer, toast } from "react-toastify";
 
 const Registration = () => {
-  const [registerUser] = useRegistrationMutation();
-  const navigate = useNavigate()
+  const [registerUser, data] = useRegistrationMutation();
+  console.log(data);
+
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -56,13 +58,13 @@ const Registration = () => {
         return setErrors({ fullName: res.error.data.message });
       if (field == "password")
         return setErrors({ password: res.error.data.message });
-    } else { 
+    } else {
       setErrors({});
 
       toast.success("Registration Successful!");
       setTimeout(() => {
-        navigate("/login")
-      }, 2500);
+        navigate("/login");
+      }, 500);
     }
   };
 
@@ -70,9 +72,7 @@ const Registration = () => {
     <div className="flex h-screen items-center justify-center ">
       <ToastContainer />
       <div className="flex flex-col max-w-md mx-auto  p-6 shadow-lg rounded-2xl bg-white w-full">
-        <h2 className="text-2xl font-semibold mb-5 text-center">
-          Create your Account
-        </h2>
+        <h2 className="text-2xl font-semibold mb-5 text-center">Registraion</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Full Name */}
