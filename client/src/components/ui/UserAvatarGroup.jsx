@@ -11,15 +11,15 @@ export default function UserAvatarGroup({ members }) {
           title={user.name}
           className="-ml-2 flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-blue-600 text-xs font-bold text-white first:ml-0"
         >
-           {user?.avatar ? (
-                <img
-                  src={user?.avatar}
-                  alt="members"
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                user?.fullName?.charAt(0)
-              )}
+          {user?.avatar ? (
+            <img
+              src={user?.avatar}
+              alt="members"
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            user?.fullName?.charAt(0)
+          )}
         </div>
       ))}
     </div>

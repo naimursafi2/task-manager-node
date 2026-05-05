@@ -58,7 +58,7 @@ const Login = () => {
       toast.success("Login Successful!");
       setTimeout(() => {
         navigate("/");
-      }, 500);
+      }, 1000);
     }
   };
 
