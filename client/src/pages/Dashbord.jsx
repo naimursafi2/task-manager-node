@@ -30,7 +30,7 @@ const Dashbord = () => {
         className="fixed bottom-10 right-5 cursor-pointer"
         size="lg"
       >
-        +Create Task
+        + Create Task
       </Button>
       <Navbar data={data} />
       <div className="container mx-auto mt-2 gap-7 grid p-5 md:grid-cols-2 lg:grid-cols-4">
@@ -38,7 +38,7 @@ const Dashbord = () => {
           <TaskCard key={project._id} project={project} />
         ))}
       </div>
-      {modal && <CreateProject modal={(mode)=> setModal(mode)}/>}
+      {modal && <CreateProject modal={(mode) => setModal(mode)} />}
     </div>
   );
 };
