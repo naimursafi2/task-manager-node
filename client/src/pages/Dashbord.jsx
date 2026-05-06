@@ -32,7 +32,7 @@ const Dashbord = () => {
       >
         + Create Task
       </Button>
-      <Navbar data={data} />
+     {/*  <Navbar data={data} /> */}
       <div className="container mx-auto mt-2 gap-7 grid p-5 md:grid-cols-2 lg:grid-cols-4">
         {projectList?.project?.map((project) => (
           <TaskCard key={project._id} project={project} />

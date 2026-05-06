@@ -32,6 +32,9 @@ export const apiService = createApi({
         method:"POST",
         body: projectData,
       })
+    }),
+    getProjectDetailes: build.query({
+      query:()=>`/project/details`
     })
   }),
 });

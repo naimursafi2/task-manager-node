@@ -4,6 +4,8 @@ import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import OTPVerify from "./pages/OTPverify";
 import Dashbord from "./pages/Dashbord";
+import Layout from "./components/layout";
+import ProjectDetiles from "./pages/ProjectDetiles";
 
 const App = () => {
   return (
@@ -12,7 +14,10 @@ const App = () => {
         <Route path="/registration" element={<Registration />} />
         <Route path="/login" element={<Login />} />
         <Route path="/email-verification" element={<OTPVerify />} />
-        <Route path="/" element={<Dashbord />} />
+        <Route path="/" element={<Layout />}>
+        <Route index element={<Dashbord />} />
+        <Route path="/:slug" element={<ProjectDetiles />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
