@@ -43,12 +43,12 @@ const projectList = async (req, res) => {
 };
 
 const projectDetailes = async (req, res) => {
-  const slug = req.params;
+  const {slug} = req.params;
   try {
     const project = await projectSchema.findOne({
       $or: [{ author: req.user._id }, { members: req.user._id }],
       slug,
-    });
+    }).populate("author members", "fullName avatar");
     if (!project) return res.status(400).send({ message: "Not Found" });
     res.status(200).send(project);
   } catch (error) {
