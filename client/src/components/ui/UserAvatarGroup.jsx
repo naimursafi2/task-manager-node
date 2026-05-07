@@ -5,10 +5,10 @@ export default function UserAvatarGroup({ members }) {
 
   return (
     <div className="flex items-center border-t border-t-gray-300 pt-2">
-      {members.map((user, index) => (
+      {members?.map((user, index) => (
         <div
           key={user._id}
-          title={user.name}
+          title={user?.name}
           className="-ml-2 flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-blue-600 text-xs font-bold text-white first:ml-0"
         >
           {user?.avatar ? (

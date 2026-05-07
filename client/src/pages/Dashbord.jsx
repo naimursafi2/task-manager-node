@@ -9,6 +9,8 @@ import CreateProject from "./CreateProject";
 
 const Dashbord = () => {
   const { data, isLoading } = useGetProfileQuery();
+  // console.log(data);
+  
   const { data: projectList, isLoading: projectLoading } =
     useGetProjectListQuery();
   const [modal, setModal] = useState(false);
