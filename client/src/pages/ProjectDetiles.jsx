@@ -9,12 +9,12 @@ import { useParams } from "react-router";
 import Loader from "../components/ui/Loader";
 
 const ProjectDetiles = () => {
-const {slug} = useParams();
-console.log(slug)
+  const { slug } = useParams();
+  console.log(slug);
 
   const [modal, setModal] = useState(false);
   const { data, isLoading } = useGetProjectDetailesQuery(slug);
- if(isLoading) return <Loader/>
+  if (isLoading) return <Loader />;
 
   return (
     <div className="py-33">
@@ -61,7 +61,7 @@ console.log(slug)
         <div className="py-20 space-y-4">
           <div className="flex justify-between">
             <h2 className="text-2xl">Task List</h2>
-            <Button onClick={()=>setModal(true)}>Add Task</Button>
+            <Button onClick={() => setModal(true)}>Add Task</Button>
           </div>
           {data?.tasks?.map((item) => (
             <div
@@ -83,7 +83,14 @@ console.log(slug)
           ))}
         </div>
       </div>
-       {modal && <CreateTask modal={(mode) => setModal(mode)} prjectId={data._id} members={data?.members}/>}
+      {modal && (
+        <CreateTask
+          modal={(mode) => setModal(mode)}
+          prjectId={data._id}
+          members={data?.members}
+          slug={slug}
+        />
+      )}
     </div>
   );
 };

@@ -5,12 +5,15 @@ import Input from "./Input";
 import {
   useAddNewTaskMutation,
   useCreateProjectMutation,
-  useGetProjectListQuery,
+  useGetProjectDetailesQuery,
+ 
 } from "../../services/api";
 import { IoClose } from "react-icons/io5";
+import MultiMemberSelect from "./MultiMemberSelect";
 
-const CreateTask = ({ modal, prjectId, members }) => {
-  const { refetch } = useGetProjectListQuery();
+const CreateTask = ({ modal, prjectId, members ,slug}) => {
+   const { refetch} = useGetProjectDetailesQuery(slug);
+  
   const [taskData, setTaskData] = useState({
     title: "",
     description: "",
@@ -82,7 +85,7 @@ const CreateTask = ({ modal, prjectId, members }) => {
               onChange={(e) =>
                 setTaskData((prev) => ({
                   ...prev,
-                  description: e.target.value,
+                  priority: e.target.value,
                 }))
               }
             >
@@ -90,22 +93,17 @@ const CreateTask = ({ modal, prjectId, members }) => {
               <option value="high">High</option>
               <option value="low">Low</option>
             </select>
-            <select
-              onChange={(e) =>
-                setTaskData((prev) => ({
-                  ...prev,
-                  assignedTo: [e.target.value],
-                }))
-              }
-              className="border w-full mt-2 shadow-2xl"
-            >
-              <option hidden>Assign Members</option>
-              {members.map((item) => (
-                <option key={item._id} value={item._id}>
-                  {item?.fullName}
-                </option>
-              ))}
-            </select>
+
+             <MultiMemberSelect
+            members={members}
+            selectedMembers={taskData.assignedTo}
+            setSelectedMembers={(selectedIds) =>
+              setTaskData((prev) => ({
+                ...prev,
+                assignedTo: selectedIds,
+              }))
+            }
+          />
           </div>
 
           {/* Submit Button */}
