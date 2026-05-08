@@ -113,6 +113,9 @@ const Login = () => {
           <Button type="submit" className="w-full">
             Login
           </Button>
+          <Button variant="outline" className="w-full">
+            Forgot password
+          </Button>
           <p className=" text-right">
             Don't have an account{" "}
             <Link className="text-blue-900 font-bold" to="/registration">

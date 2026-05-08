@@ -1,25 +1,29 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
-import Button from "../components/ui/Button";
-import Input from "../components/ui/Input";
+import Button from "./Button";
+import Input from "./Input";
 import {
+  useAddNewTaskMutation,
   useCreateProjectMutation,
   useGetProjectListQuery,
-} from "../services/api";
+} from "../../services/api";
 import { IoClose } from "react-icons/io5";
 
-const CreateProject = ({ modal }) => {
+const CreateTask = ({ modal, prjectId, members }) => {
   const { refetch } = useGetProjectListQuery();
-  const [projectData, setProjectData] = useState({
+  const [taskData, setTaskData] = useState({
     title: "",
     description: "",
+    priority: "mid",
+    assignedTo: [],
+    projectId: prjectId,
   });
   const [error, setError] = useState("");
 
-  const [createProject] = useCreateProjectMutation();
+  const [createTask] = useAddNewTaskMutation();
   const handelCreate = async (e) => {
     e.preventDefault();
-    const res = await createProject(projectData);
+    const res = await createTask(taskData);
     if (res.error) {
       setError("Something went wrong");
       return;
@@ -37,7 +41,7 @@ const CreateProject = ({ modal }) => {
           <IoClose />
         </button>
         <h2 className="text-2xl font-semibold mb-5 mt-4 text-center">
-          Create a new Project
+          Create a new Task
         </h2>
         {error && (
           <p className="text-red-500 text-sm text-center mb-2">{error}</p>
@@ -46,16 +50,13 @@ const CreateProject = ({ modal }) => {
         <form onSubmit={handelCreate} className="space-y-4">
           {/* Email */}
           <div>
-            <label className="block mb-1 text-sm font-medium">
-              Project Title
-            </label>
+            <label className="block mb-1 text-sm font-medium">Task Title</label>
             <Input
-        
               type="text"
-              placeholder="project title here"
+              placeholder="Task title here"
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 `}
               onChange={(e) =>
-                setProjectData((prev) => ({ ...prev, title: e.target.value }))
+                setTaskData((prev) => ({ ...prev, title: e.target.value }))
               }
             />
           </div>
@@ -63,24 +64,53 @@ const CreateProject = ({ modal }) => {
           {/* Password */}
           <div>
             <label className="block mb-1 text-sm font-medium">
-              Project Decription
+              Task Decription
             </label>
             <Input
               type="text"
-              placeholder="project Decription here"
+              placeholder="Task Decription here"
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2`}
               onChange={(e) =>
-                setProjectData((prev) => ({
+                setTaskData((prev) => ({
                   ...prev,
                   description: e.target.value,
                 }))
               }
             />
+            <select
+              className="border w-full mt-2"
+              onChange={(e) =>
+                setTaskData((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))
+              }
+            >
+              <option value="mid">Mid</option>
+              <option value="high">High</option>
+              <option value="low">Low</option>
+            </select>
+            <select
+              onChange={(e) =>
+                setTaskData((prev) => ({
+                  ...prev,
+                  assignedTo: [e.target.value],
+                }))
+              }
+              className="border w-full mt-2 shadow-2xl"
+            >
+              <option hidden>Assign Members</option>
+              {members.map((item) => (
+                <option key={item._id} value={item._id}>
+                  {item?.fullName}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Submit Button */}
           <Button type="submit" className="w-full">
-            Create Project
+            Create Task
           </Button>
         </form>
       </div>
@@ -88,4 +118,4 @@ const CreateProject = ({ modal }) => {
   );
 };
 
-export default CreateProject;
+export default CreateTask;

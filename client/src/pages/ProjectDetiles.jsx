@@ -1,11 +1,20 @@
-import React from "react";
+import React, { use, useState } from "react";
 import { useGetProjectDetailesQuery } from "../services/api";
 import Button from "../components/ui/Button";
 import UserAvatarGroup from "../components/ui/UserAvatarGroup";
 import PriorityBadge from "../components/ui/PriorityBadge";
+import CreateProject from "../components/ui/CreateProject";
+import CreateTask from "../components/ui/CreateTask";
+import { useParams } from "react-router";
+import Loader from "../components/ui/Loader";
 
 const ProjectDetiles = () => {
-  const { data } = useGetProjectDetailesQuery("website-uk-client");
+const {slug} = useParams();
+console.log(slug)
+
+  const [modal, setModal] = useState(false);
+  const { data, isLoading } = useGetProjectDetailesQuery(slug);
+ if(isLoading) return <Loader/>
 
   return (
     <div className="py-33">
@@ -52,7 +61,7 @@ const ProjectDetiles = () => {
         <div className="py-20 space-y-4">
           <div className="flex justify-between">
             <h2 className="text-2xl">Task List</h2>
-            <Button>Add Task</Button>
+            <Button onClick={()=>setModal(true)}>Add Task</Button>
           </div>
           {data?.tasks?.map((item) => (
             <div
@@ -65,7 +74,7 @@ const ProjectDetiles = () => {
                 Assigned to:
                 <UserAvatarGroup members={item?.assignedTo} />
               </div>
-              <div>
+              <div className="space-y-4">
                 Priority: <PriorityBadge priority={item.priority} />
                 <p>{item?.isComplete ? "completed" : "incompleted"}</p>
                 <Button>Assign Member</Button>
@@ -74,6 +83,7 @@ const ProjectDetiles = () => {
           ))}
         </div>
       </div>
+       {modal && <CreateTask modal={(mode) => setModal(mode)} prjectId={data._id} members={data?.members}/>}
     </div>
   );
 };

@@ -5,7 +5,8 @@ import Loader from "../components/ui/Loader";
 import { Navigate } from "react-router";
 import TaskCard from "../components/ui/TaskCard";
 import Button from "../components/ui/Button";
-import CreateProject from "./CreateProject";
+import CreateProject from "../components/ui/CreateProject";
+
 
 const Dashbord = () => {
   const { data, isLoading } = useGetProfileQuery();
@@ -14,6 +15,7 @@ const Dashbord = () => {
   const { data: projectList, isLoading: projectLoading } =
     useGetProjectListQuery();
   const [modal, setModal] = useState(false);
+console.log(isLoading);
 
   if (isLoading) {
     return <Loader />;
