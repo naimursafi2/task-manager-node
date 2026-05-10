@@ -8,6 +8,8 @@ const {
   login,
   userProfile,
   updateProfile,
+  forgotPassword,
+  resetPassword,
 } = require("../controllers/authController");
 const { authmiddleware } = require("../middleware/authmiddleware");
 const router = express.Router();
@@ -15,6 +17,8 @@ const router = express.Router();
 router.post("/registration", registration);
 router.post("/verify-otp", verifyOTP);
 router.post("/login", login);
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
 router.get("/profile", authmiddleware, userProfile);
 router.put("/update-profile",authmiddleware,upload.single("avatar"), updateProfile)
 

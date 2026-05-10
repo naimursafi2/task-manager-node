@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
-// import { useResetPasswordMutation } from "../services/api";
+import { useResetPasswordMutation } from "../services/api";
 import { useLocation, useNavigate } from "react-router";
+import { toast, ToastContainer } from "react-toastify";
 
 const ResetPassword = () => {
   const location = useLocation();
   const navigate = useNavigate();
-//   const [resetPassword] = useResetPasswordMutation();
+  const [resetPassword] = useResetPasswordMutation();
 
   const [form, setForm] = useState({
     email: location.state?.email || "",
@@ -28,15 +29,16 @@ const ResetPassword = () => {
     const res = await resetPassword(form);
 
     if (res.error) {
-      return alert(res.error.data.message);
+      return toast.warning(res.error.data.message);
     }
 
-    alert("Password reset successful");
+    toast.success("Password reset successful");
     navigate("/login");
   };
 
   return (
     <div className="flex h-screen items-center justify-center">
+      <ToastContainer/>
       <form onSubmit={handleSubmit} className="w-full max-w-md p-6 shadow rounded-xl">
         <h2 className="text-2xl mb-4 text-center">Reset Password</h2>
 

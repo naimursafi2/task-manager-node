@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+
 export const apiService = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8000",
@@ -42,6 +43,20 @@ export const apiService = createApi({
         method:"POST",
         body:taskData,
       })
+    }),
+    forgotPassword: build.mutation({
+      query:(fogotData)=>({
+        url: "/auth/forgot-password",
+        method: "POST",
+        body:fogotData,
+      })
+    }),
+    resetPassword: build.mutation({
+      query:(resetData)=>({
+        url:"/auth/reset-password",
+        method:"post",
+        body: resetData, 
+      })
     })
   }),
 });
@@ -53,5 +68,8 @@ export const {
   useGetProjectListQuery,
   useCreateProjectMutation,
   useGetProjectDetailesQuery,
-  useAddNewTaskMutation
+  useAddNewTaskMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
+
 } = apiService;
