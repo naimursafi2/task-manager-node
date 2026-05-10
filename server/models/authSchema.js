@@ -34,7 +34,7 @@ const authSchema = new mongoose.Schema({
     type:String,
     default:null,
   },
-  resetOtpString:{
+  resetOtpExpiry:{
     type: Date,
     default: null
   },
