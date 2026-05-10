@@ -12,7 +12,7 @@ import { IoClose } from "react-icons/io5";
 import MultiMemberSelect from "./MultiMemberSelect";
 
 const CreateTask = ({ modal, prjectId, members ,slug}) => {
-   const { refetch} = useGetProjectDetailesQuery(slug);
+  const { refetch} = useGetProjectDetailesQuery(slug);
   
   const [taskData, setTaskData] = useState({
     title: "",
@@ -66,7 +66,7 @@ const CreateTask = ({ modal, prjectId, members ,slug}) => {
 
           {/* Password */}
           <div>
-            <label className="block mb-1 text-sm font-medium">
+            <label className="block text-sm font-medium">
               Task Decription
             </label>
             <Input
@@ -80,8 +80,13 @@ const CreateTask = ({ modal, prjectId, members ,slug}) => {
                 }))
               }
             />
+           
+          <label className="block mt-4 text-md font-medium">
+              Priority:
+            </label>
             <select
-              className="border w-full mt-2"
+            
+              className="border w-full  p-2 rounded-xl text-md "
               onChange={(e) =>
                 setTaskData((prev) => ({
                   ...prev,
@@ -97,10 +102,10 @@ const CreateTask = ({ modal, prjectId, members ,slug}) => {
              <MultiMemberSelect
             members={members}
             selectedMembers={taskData.assignedTo}
-            setSelectedMembers={(selectedIds) =>
+            setSelectedMembers={(selectedId) =>
               setTaskData((prev) => ({
                 ...prev,
-                assignedTo: selectedIds,
+                assignedTo: selectedId,
               }))
             }
           />

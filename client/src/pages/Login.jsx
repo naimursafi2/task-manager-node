@@ -4,8 +4,10 @@ import Button from "../components/ui/Button";
 import { Link, useNavigate } from "react-router";
 import { useLoginMutation } from "../services/api";
 import { toast, ToastContainer } from "react-toastify";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [loginUser] = useLoginMutation();
   const [form, setForm] = useState({
@@ -90,10 +92,10 @@ const Login = () => {
           </div>
 
           {/* Password */}
-          <div>
+          <div className="relative">
             <label className="block mb-1 text-sm font-medium">Password</label>
             <Input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               value={form.password}
               onChange={handleChange}
@@ -104,6 +106,13 @@ const Login = () => {
                   : "border-gray-300 focus:ring-blue-400"
               }`}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-11 -translate-y-1/2 text-gray-500 text-xl"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
             {errors.password && (
               <p className="text-sm text-red-500 mt-1">{errors.password}</p>
             )}
@@ -113,7 +122,11 @@ const Login = () => {
           <Button type="submit" className="w-full">
             Login
           </Button>
-          <Button variant="outline" className="w-full">
+          <Button
+            onClick={() => navigate("/forgot-password")}
+            variant="outline"
+            className="w-full"
+          >
             Forgot password
           </Button>
           <p className=" text-right">

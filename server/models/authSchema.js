@@ -30,6 +30,14 @@ const authSchema = new mongoose.Schema({
   otpExpiry: {
     type: Date, 
   },
+  resetOtp:{
+    type:String,
+    default:null,
+  },
+  resetOtpString:{
+    type: Date,
+    default: null
+  },
 });
 
 authSchema.pre("save", async function () {

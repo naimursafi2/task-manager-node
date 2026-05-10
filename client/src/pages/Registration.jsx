@@ -4,8 +4,10 @@ import Button from "../components/ui/Button";
 import { Link, Navigate, useNavigate } from "react-router";
 import { useRegistrationMutation } from "../services/api";
 import { ToastContainer, toast } from "react-toastify";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Registration = () => {
+   const [showPassword, setShowPassword] = useState(false);
   const [registerUser, data] = useRegistrationMutation();
   console.log(data);
 
@@ -116,10 +118,10 @@ const Registration = () => {
           </div>
 
           {/* Password */}
-          <div>
+          <div className="relative">
             <label className="block mb-1 text-sm font-medium">Password</label>
             <Input
-              type="password"
+            type={showPassword ? "text" : "password"}
               name="password"
               value={form.password}
               onChange={handleChange}
@@ -130,6 +132,13 @@ const Registration = () => {
                   : "border-gray-300 focus:ring-blue-400"
               }`}
             />
+             <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-11 -translate-y-1/2 text-gray-500 text-xl"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
             {errors.password && (
               <p className="text-sm text-red-500 mt-1">{errors.password}</p>
             )}

@@ -1,6 +1,10 @@
 import React from "react";
 
-const MultiMemberSelect = ({ members = [], selectedMembers = [], setSelectedMembers }) => {
+const MultiMemberSelect = ({
+  members = [],
+  selectedMembers = [],
+  setSelectedMembers,
+}) => {
   const handleSelect = (memberId) => {
     if (selectedMembers.includes(memberId)) {
       setSelectedMembers(selectedMembers.filter((id) => id !== memberId));
